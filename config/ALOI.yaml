@@ -1,0 +1,34 @@
+dataset: ALOI
+save_dir: "./results/${dataset}"
+pretrain_dir: "./results/${dataset}/ae_weights_1.h5"
+pretrain_epochs: 500
+verbose: 1
+testing: true   # Testing the clustering performance with provided weights
+weights: "./results/${dataset}/model_final.h5"  # Model weights, used for testing
+train_ae: false
+save: false
+pre_batch_size: 128
+batch_size: 512
+pre_lr: 0.001
+lr: 0.0005
+maxiter: 25000
+UpdateCoo: 1000 
+ClusterInterval: 200  # number of iterations to cluster
+max_update_coo: 1000000 # max iterations of update unified distribution
+max_cluster_interval: 500000 # max iterations of cluster
+min_update_coo: 1 # min iterations of update unified distribution
+min_cluster_interval: 1 # min iterations of cluster
+update_step1: 0
+update_step2: 0
+Coo: 1    # whether use unified distribution
+K12q: 0    # 0: each view use its sepcific cluster center; other: each view use specified view cluster center
+AR: 0.95   # aligned ratio thresold
+ARtime: 1   # over aligned rate times
+Coo: 1
+embed_dim: [50, 50, 50, 50]   # dim of embed features of the result from the encoder of each view
+Idec: 1   # weight of resconturciton of autoencoders
+lc: 0   # weight of kl loss between each view and unified distribution and constrastive loss
+dg_weight: 0    # weight of degradation loss
+lcs: [1]
+dg_weights: [0.001]
+seed: 42 

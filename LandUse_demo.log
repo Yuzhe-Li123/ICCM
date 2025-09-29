@@ -1,0 +1,108 @@
+2025-09-28 13:57:09.381886: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-09-28 13:57:09.498795: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-09-28 13:57:09.530896: E tensorflow/stream_executor/cuda/cuda_blas.cc:2981] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-09-28 13:57:10.025671: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libnvinfer.so.7'; dlerror: libnvinfer.so.7: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: :/usr/local/cuda-11.7/lib64:/usr/local/cuda-11.7/lib64
+2025-09-28 13:57:10.025763: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libnvinfer_plugin.so.7'; dlerror: libnvinfer_plugin.so.7: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: :/usr/local/cuda-11.7/lib64:/usr/local/cuda-11.7/lib64
+2025-09-28 13:57:10.025772: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Cannot dlopen some TensorRT libraries. If you would like to use Nvidia GPU with TensorRT, please make sure the missing libraries mentioned above are installed properly.
+lc is 1, dg_weights is 0.001
+++++++++++++++++++++++++++++++  Parameters  ++++++++++++++++++++++++++++++
+Namespace(dataset='LandUse', save_dir='./results/LandUse', pretrain_dir='./results/LandUse/ae_weights.h5', pretrain_epochs=500, verbose=1, testing=True, weights='./results/LandUse/model_final.h5', train_ae=False, save=False, pre_batch_size=128, batch_size=512, pre_lr=0.001, lr=0.0005, maxiter=5000, UpdateCoo=1000, ClusterInterval=200, max_update_coo=1000000, max_cluster_interval=500000, min_update_coo=1, min_cluster_interval=1, update_step1=0, update_step2=0, Coo=1, K12q=0, AR=0.95, ARtime=1, embed_dim=BoxList([10, 10]), Idec=1, lc=1, dg_weight=0.001, lcs=BoxList([1]), dg_weights=BoxList([0.001]), seed=3407)
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+load: LandUse
+[(59,), (40,)]
+['mse', <function MSE at 0x7f4402901b80>, 'mse', <function MSE at 0x7f4402901b80>, <function Weighted_KLD at 0x7f44000f8c10>]
+[1, 0.001, 1, 0.001, 1]
+n_clusters:21
+2025-09-28 13:57:19.435853: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-09-28 13:57:19.768501: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1616] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 79146 MB memory:  -> device: 0, name: NVIDIA A100 80GB PCIe, pci bus id: 0000:ca:00.0, compute capability: 8.0
+Model: "model_2"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ input1 (InputLayer)            [(None, 59)]         0           []                               
+                                                                                                  
+ input2 (InputLayer)            [(None, 40)]         0           []                               
+                                                                                                  
+ v1_encoder_0 (Dense)           (None, 500)          30000       ['input1[0][0]']                 
+                                                                                                  
+ v2_encoder_0 (Dense)           (None, 500)          20500       ['input2[0][0]']                 
+                                                                                                  
+ v1_encoder_1 (Dense)           (None, 500)          250500      ['v1_encoder_0[0][0]']           
+                                                                                                  
+ v1_Fencoder (Functional)       (None, 10)           1302510     ['input1[0][0]']                 
+                                                                                                  
+ v2_Fencoder (Functional)       (None, 10)           1293010     ['input2[0][0]']                 
+                                                                                                  
+ v2_encoder_1 (Dense)           (None, 500)          250500      ['v2_encoder_0[0][0]']           
+                                                                                                  
+ v1_encoder_2 (Dense)           (None, 2000)         1002000     ['v1_encoder_1[0][0]']           
+                                                                                                  
+ concatenate (Concatenate)      (None, 20)           0           ['v1_Fencoder[0][0]',            
+                                                                  'v2_Fencoder[0][0]']            
+                                                                                                  
+ v2_encoder_2 (Dense)           (None, 2000)         1002000     ['v2_encoder_1[0][0]']           
+                                                                                                  
+ embedding1 (Dense)             (None, 10)           20010       ['v1_encoder_2[0][0]']           
+                                                                                                  
+ v1_degrade_0 (Dense)           (None, 500)          10500       ['concatenate[0][0]']            
+                                                                                                  
+ embedding2 (Dense)             (None, 10)           20010       ['v2_encoder_2[0][0]']           
+                                                                                                  
+ v2_degrade_0 (Dense)           (None, 500)          10500       ['concatenate[0][0]']            
+                                                                                                  
+ v1_decoder_3 (Dense)           (None, 2000)         22000       ['embedding1[0][0]']             
+                                                                                                  
+ v1_degrade_1 (Dense)           (None, 2000)         1002000     ['v1_degrade_0[0][0]']           
+                                                                                                  
+ v2_decoder_3 (Dense)           (None, 2000)         22000       ['embedding2[0][0]']             
+                                                                                                  
+ v2_degrade_1 (Dense)           (None, 2000)         1002000     ['v2_degrade_0[0][0]']           
+                                                                                                  
+ v1_decoder_2 (Dense)           (None, 500)          1000500     ['v1_decoder_3[0][0]']           
+                                                                                                  
+ v1_degrade_2 (Dense)           (None, 500)          1000500     ['v1_degrade_1[0][0]']           
+                                                                                                  
+ v2_decoder_2 (Dense)           (None, 500)          1000500     ['v2_decoder_3[0][0]']           
+                                                                                                  
+ v2_degrade_2 (Dense)           (None, 500)          1000500     ['v2_degrade_1[0][0]']           
+                                                                                                  
+ v1_decoder_1 (Dense)           (None, 500)          250500      ['v1_decoder_2[0][0]']           
+                                                                                                  
+ degrade_embedding1 (Dense)     (None, 10)           5010        ['v1_degrade_2[0][0]']           
+                                                                                                  
+ v2_decoder_1 (Dense)           (None, 500)          250500      ['v2_decoder_2[0][0]']           
+                                                                                                  
+ degrade_embedding2 (Dense)     (None, 10)           5010        ['v2_degrade_2[0][0]']           
+                                                                                                  
+ clustering1 (ClusteringLayer)  (None, 21)           210         ['embedding1[0][0]']             
+                                                                                                  
+ clustering2 (ClusteringLayer)  (None, 21)           210         ['embedding2[0][0]']             
+                                                                                                  
+ v1_decoder_0 (Dense)           (None, 59)           29559       ['v1_decoder_1[0][0]']           
+                                                                                                  
+ lambda (Lambda)                (None, 2, 10)        0           ['embedding1[0][0]',             
+                                                                  'degrade_embedding1[0][0]']     
+                                                                                                  
+ v2_decoder_0 (Dense)           (None, 40)           20040       ['v2_decoder_1[0][0]']           
+                                                                                                  
+ lambda_1 (Lambda)              (None, 2, 10)        0           ['embedding2[0][0]',             
+                                                                  'degrade_embedding2[0][0]']     
+                                                                                                  
+ lambda_2 (Lambda)              (None, 2, 21)        0           ['clustering1[0][0]',            
+                                                                  'clustering2[0][0]']            
+                                                                                                  
+==================================================================================================
+Total params: 9,227,559
+Trainable params: 9,227,559
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Begin testing: ------------------------------------------------------------
+2025-09-28 13:57:22.657010: I tensorflow/stream_executor/cuda/cuda_blas.cc:1614] TensorFloat-32 will be used for the matrix multiplication. This will only be logged once.
+ 1/66 [..............................] - ETA: 1:1015/66 [=====>........................] - ETA: 0s  32/66 [=============>................] - ETA: 0s49/66 [=====================>........] - ETA: 0s65/66 [============================>.] - ETA: 0s66/66 [==============================] - 1s 3ms/step
+Self-Supervised Multi-View Discriminative Feature Learning
+Final: acc=0.2995, nmi=0.3327, ari=0.1454, pur=0.3148
+Final: acc=0.2905, nmi=0.3192, ari=0.1397, pur=0.3090
+Final: acc=0.2962, nmi=0.3225, ari=0.1417, pur=0.3100
+End testing: ------------------------------------------------------------

@@ -2,6 +2,8 @@
 
 This repo contains the code of the paper: Information-driven Complementarity and Consistency Mining for Multi-view Clustering
 
+The dataset is available at https://drive.google.com/drive/folders/1bTjDRJYMkxhgdUbVc6zCzSiEwv-wji-a?usp=drive_link
+
 ## Requirements
 
 tensorflow==2.10.0
